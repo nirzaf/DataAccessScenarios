@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="156d70d47092447c86e9144068910866" Name="Diagram1">
+        <EntityTypeShape EntityType="EventsDBModel1.CapacityRequirement" Width="1.5" PointX="10.5" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EventsDBModel1.Customer" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EventsDBModel1.CustomerAddress" Width="1.5" PointX="0.75" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EventsDBModel1.CustomerContact" Width="1.5" PointX="5.25" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EventsDBModel1.Event" Width="1.5" PointX="8.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EventsDBModel1.Room" Width="1.5" PointX="10.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EventsDBModel1.RoomBooking" Width="1.5" PointX="12.75" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EventsDBModel1.RoomCapacity" Width="1.5" PointX="12.75" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EventsDBModel1.Venue" Width="1.5" PointX="6" PointY="0.875" IsExpanded="true" />
+        <AssociationConnector Association="EventsDBModel1.FK_CapacityRequirement_Event" ManuallyRouted="false" />
+        <AssociationConnector Association="EventsDBModel1.FK_RoomBooking_CapacityRequirement" ManuallyRouted="false" />
+        <AssociationConnector Association="EventsDBModel1.FK_Customer_InvoiceAddress" ManuallyRouted="false" />
+        <AssociationConnector Association="EventsDBModel1.FK_Customer_InvoiceContact" ManuallyRouted="false" />
+        <AssociationConnector Association="EventsDBModel1.FK_CustomerAddress_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="EventsDBModel1.FK_CustomerContact_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="EventsDBModel1.FK_Event_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="EventsDBModel1.FK_Event_Venue" ManuallyRouted="false" />
+        <AssociationConnector Association="EventsDBModel1.FK_Room_Venue" ManuallyRouted="false" />
+        <AssociationConnector Association="EventsDBModel1.FK_RoomBooking_Room" ManuallyRouted="false" />
+        <AssociationConnector Association="EventsDBModel1.FK_RoomCapacity_Room" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

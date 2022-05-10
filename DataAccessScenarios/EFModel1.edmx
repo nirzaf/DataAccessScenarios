@@ -1,0 +1,741 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EventsDBModel1.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CapacityRequirement">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Capacity" Type="int" />
+          <Property Name="RoomSetup" Type="int" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" />
+          <Property Name="Event" Type="uniqueidentifier" />
+          <Property Name="OptimisticLockField" Type="int" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="InvoiceContact" Type="uniqueidentifier" />
+          <Property Name="InvoiceAddress" Type="uniqueidentifier" />
+          <Property Name="OptimisticLockField" Type="int" />
+        </EntityType>
+        <EntityType Name="CustomerAddress">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Line1" Type="nvarchar" MaxLength="100" />
+          <Property Name="Line2" Type="nvarchar" MaxLength="100" />
+          <Property Name="Line3" Type="nvarchar" MaxLength="100" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" />
+          <Property Name="PostCode" Type="nvarchar" MaxLength="100" />
+          <Property Name="Country" Type="nvarchar" MaxLength="100" />
+          <Property Name="Customer" Type="uniqueidentifier" />
+          <Property Name="OptimisticLockField" Type="int" />
+        </EntityType>
+        <EntityType Name="CustomerContact">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="100" />
+          <Property Name="Customer" Type="uniqueidentifier" />
+          <Property Name="OptimisticLockField" Type="int" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="Venue" Type="uniqueidentifier" />
+          <Property Name="Customer" Type="uniqueidentifier" />
+          <Property Name="OptimisticLockField" Type="int" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Venue" Type="uniqueidentifier" />
+          <Property Name="OptimisticLockField" Type="int" />
+        </EntityType>
+        <EntityType Name="RoomBooking">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CapacityRequirement" Type="uniqueidentifier" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" />
+          <Property Name="Room" Type="uniqueidentifier" />
+          <Property Name="OptimisticLockField" Type="int" />
+        </EntityType>
+        <EntityType Name="RoomCapacity">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Capacity" Type="int" />
+          <Property Name="Setup" Type="int" />
+          <Property Name="Room" Type="uniqueidentifier" />
+          <Property Name="OptimisticLockField" Type="int" />
+        </EntityType>
+        <EntityType Name="Venue">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Photo" Type="varbinary(max)" />
+          <Property Name="OptimisticLockField" Type="int" />
+        </EntityType>
+        <Association Name="FK_CapacityRequirement_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="0..1" />
+          <End Role="CapacityRequirement" Type="Self.CapacityRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="CapacityRequirement">
+              <PropertyRef Name="Event" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_InvoiceAddress">
+          <End Role="CustomerAddress" Type="Self.CustomerAddress" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerAddress">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="InvoiceAddress" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_InvoiceContact">
+          <End Role="CustomerContact" Type="Self.CustomerContact" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerContact">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="InvoiceContact" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerAddress_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="CustomerAddress" Type="Self.CustomerAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="CustomerAddress">
+              <PropertyRef Name="Customer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerContact_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="CustomerContact" Type="Self.CustomerContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="CustomerContact">
+              <PropertyRef Name="Customer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Event_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="Customer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Event_Venue">
+          <End Role="Venue" Type="Self.Venue" Multiplicity="0..1" />
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venue">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="Venue" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_Venue">
+          <End Role="Venue" Type="Self.Venue" Multiplicity="0..1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venue">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="Venue" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomBooking_CapacityRequirement">
+          <End Role="CapacityRequirement" Type="Self.CapacityRequirement" Multiplicity="0..1" />
+          <End Role="RoomBooking" Type="Self.RoomBooking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CapacityRequirement">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="RoomBooking">
+              <PropertyRef Name="CapacityRequirement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomBooking_Room">
+          <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="RoomBooking" Type="Self.RoomBooking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="RoomBooking">
+              <PropertyRef Name="Room" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomCapacity_Room">
+          <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="RoomCapacity" Type="Self.RoomCapacity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="RoomCapacity">
+              <PropertyRef Name="Room" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EventsDBModel1StoreContainer">
+          <EntitySet Name="CapacityRequirement" EntityType="Self.CapacityRequirement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerAddress" EntityType="Self.CustomerAddress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerContact" EntityType="Self.CustomerContact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoomBooking" EntityType="Self.RoomBooking" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RoomCapacity" EntityType="Self.RoomCapacity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Venue" EntityType="Self.Venue" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CapacityRequirement_Event" Association="Self.FK_CapacityRequirement_Event">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="CapacityRequirement" EntitySet="CapacityRequirement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_InvoiceAddress" Association="Self.FK_Customer_InvoiceAddress">
+            <End Role="CustomerAddress" EntitySet="CustomerAddress" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_InvoiceContact" Association="Self.FK_Customer_InvoiceContact">
+            <End Role="CustomerContact" EntitySet="CustomerContact" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerAddress_Customer" Association="Self.FK_CustomerAddress_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="CustomerAddress" EntitySet="CustomerAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerContact_Customer" Association="Self.FK_CustomerContact_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="CustomerContact" EntitySet="CustomerContact" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_Customer" Association="Self.FK_Event_Customer">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_Venue" Association="Self.FK_Event_Venue">
+            <End Role="Venue" EntitySet="Venue" />
+            <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Venue" Association="Self.FK_Room_Venue">
+            <End Role="Venue" EntitySet="Venue" />
+            <End Role="Room" EntitySet="Room" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomBooking_CapacityRequirement" Association="Self.FK_RoomBooking_CapacityRequirement">
+            <End Role="CapacityRequirement" EntitySet="CapacityRequirement" />
+            <End Role="RoomBooking" EntitySet="RoomBooking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomBooking_Room" Association="Self.FK_RoomBooking_Room">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="RoomBooking" EntitySet="RoomBooking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomCapacity_Room" Association="Self.FK_RoomCapacity_Room">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="RoomCapacity" EntitySet="RoomCapacity" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EventsDBModel1" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CapacityRequirement">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Capacity" Type="Int32" />
+          <Property Name="RoomSetup" Type="Int32" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="Event" Type="Guid" />
+          <Property Name="OptimisticLockField" Type="Int32" />
+          <NavigationProperty Name="Event1" Relationship="Self.FK_CapacityRequirement_Event" FromRole="CapacityRequirement" ToRole="Event" />
+          <NavigationProperty Name="RoomBookings" Relationship="Self.FK_RoomBooking_CapacityRequirement" FromRole="CapacityRequirement" ToRole="RoomBooking" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="InvoiceContact" Type="Guid" />
+          <Property Name="InvoiceAddress" Type="Guid" />
+          <Property Name="OptimisticLockField" Type="Int32" />
+          <NavigationProperty Name="CustomerAddress" Relationship="Self.FK_Customer_InvoiceAddress" FromRole="Customer" ToRole="CustomerAddress" />
+          <NavigationProperty Name="CustomerContact" Relationship="Self.FK_Customer_InvoiceContact" FromRole="Customer" ToRole="CustomerContact" />
+          <NavigationProperty Name="CustomerAddresses" Relationship="Self.FK_CustomerAddress_Customer" FromRole="Customer" ToRole="CustomerAddress" />
+          <NavigationProperty Name="CustomerContacts" Relationship="Self.FK_CustomerContact_Customer" FromRole="Customer" ToRole="CustomerContact" />
+          <NavigationProperty Name="Events" Relationship="Self.FK_Event_Customer" FromRole="Customer" ToRole="Event" />
+        </EntityType>
+        <EntityType Name="CustomerAddress">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="Guid" Nullable="false" />
+          <Property Name="Line1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Line2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Line3" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PostCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Customer" Type="Guid" />
+          <Property Name="OptimisticLockField" Type="Int32" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK_Customer_InvoiceAddress" FromRole="CustomerAddress" ToRole="Customer" />
+          <NavigationProperty Name="Customer1" Relationship="Self.FK_CustomerAddress_Customer" FromRole="CustomerAddress" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="CustomerContact">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Customer" Type="Guid" />
+          <Property Name="OptimisticLockField" Type="Int32" />
+          <NavigationProperty Name="Customers" Relationship="Self.FK_Customer_InvoiceContact" FromRole="CustomerContact" ToRole="Customer" />
+          <NavigationProperty Name="Customer1" Relationship="Self.FK_CustomerContact_Customer" FromRole="CustomerContact" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="Venue" Type="Guid" />
+          <Property Name="Customer" Type="Guid" />
+          <Property Name="OptimisticLockField" Type="Int32" />
+          <NavigationProperty Name="CapacityRequirements" Relationship="Self.FK_CapacityRequirement_Event" FromRole="Event" ToRole="CapacityRequirement" />
+          <NavigationProperty Name="Customer1" Relationship="Self.FK_Event_Customer" FromRole="Event" ToRole="Customer" />
+          <NavigationProperty Name="Venue1" Relationship="Self.FK_Event_Venue" FromRole="Event" ToRole="Venue" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Venue" Type="Guid" />
+          <Property Name="OptimisticLockField" Type="Int32" />
+          <NavigationProperty Name="Venue1" Relationship="Self.FK_Room_Venue" FromRole="Room" ToRole="Venue" />
+          <NavigationProperty Name="RoomBookings" Relationship="Self.FK_RoomBooking_Room" FromRole="Room" ToRole="RoomBooking" />
+          <NavigationProperty Name="RoomCapacities" Relationship="Self.FK_RoomCapacity_Room" FromRole="Room" ToRole="RoomCapacity" />
+        </EntityType>
+        <EntityType Name="RoomBooking">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="Guid" Nullable="false" />
+          <Property Name="CapacityRequirement" Type="Guid" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="Room" Type="Guid" />
+          <Property Name="OptimisticLockField" Type="Int32" />
+          <NavigationProperty Name="CapacityRequirement1" Relationship="Self.FK_RoomBooking_CapacityRequirement" FromRole="RoomBooking" ToRole="CapacityRequirement" />
+          <NavigationProperty Name="Room1" Relationship="Self.FK_RoomBooking_Room" FromRole="RoomBooking" ToRole="Room" />
+        </EntityType>
+        <EntityType Name="RoomCapacity">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="Guid" Nullable="false" />
+          <Property Name="Capacity" Type="Int32" />
+          <Property Name="Setup" Type="Int32" />
+          <Property Name="Room" Type="Guid" />
+          <Property Name="OptimisticLockField" Type="Int32" />
+          <NavigationProperty Name="Room1" Relationship="Self.FK_RoomCapacity_Room" FromRole="RoomCapacity" ToRole="Room" />
+        </EntityType>
+        <EntityType Name="Venue">
+          <Key>
+            <PropertyRef Name="OID" />
+          </Key>
+          <Property Name="OID" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="OptimisticLockField" Type="Int32" />
+          <NavigationProperty Name="Events" Relationship="Self.FK_Event_Venue" FromRole="Venue" ToRole="Event" />
+          <NavigationProperty Name="Rooms" Relationship="Self.FK_Room_Venue" FromRole="Venue" ToRole="Room" />
+        </EntityType>
+        <Association Name="FK_CapacityRequirement_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="0..1" />
+          <End Role="CapacityRequirement" Type="Self.CapacityRequirement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="CapacityRequirement">
+              <PropertyRef Name="Event" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomBooking_CapacityRequirement">
+          <End Role="CapacityRequirement" Type="Self.CapacityRequirement" Multiplicity="0..1" />
+          <End Role="RoomBooking" Type="Self.RoomBooking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CapacityRequirement">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="RoomBooking">
+              <PropertyRef Name="CapacityRequirement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_InvoiceAddress">
+          <End Role="CustomerAddress" Type="Self.CustomerAddress" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerAddress">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="InvoiceAddress" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_InvoiceContact">
+          <End Role="CustomerContact" Type="Self.CustomerContact" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerContact">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="InvoiceContact" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerAddress_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="CustomerAddress" Type="Self.CustomerAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="CustomerAddress">
+              <PropertyRef Name="Customer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerContact_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="CustomerContact" Type="Self.CustomerContact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="CustomerContact">
+              <PropertyRef Name="Customer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Event_Customer">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="Customer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Event_Venue">
+          <End Role="Venue" Type="Self.Venue" Multiplicity="0..1" />
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venue">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="Venue" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Room_Venue">
+          <End Role="Venue" Type="Self.Venue" Multiplicity="0..1" />
+          <End Role="Room" Type="Self.Room" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Venue">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="Room">
+              <PropertyRef Name="Venue" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomBooking_Room">
+          <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="RoomBooking" Type="Self.RoomBooking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="RoomBooking">
+              <PropertyRef Name="Room" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RoomCapacity_Room">
+          <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="RoomCapacity" Type="Self.RoomCapacity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="OID" />
+            </Principal>
+            <Dependent Role="RoomCapacity">
+              <PropertyRef Name="Room" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EventsDBEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CapacityRequirements" EntityType="Self.CapacityRequirement" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="CustomerAddresses" EntityType="Self.CustomerAddress" />
+          <EntitySet Name="CustomerContacts" EntityType="Self.CustomerContact" />
+          <EntitySet Name="Events" EntityType="Self.Event" />
+          <EntitySet Name="Rooms" EntityType="Self.Room" />
+          <EntitySet Name="RoomBookings" EntityType="Self.RoomBooking" />
+          <EntitySet Name="RoomCapacities" EntityType="Self.RoomCapacity" />
+          <EntitySet Name="Venues" EntityType="Self.Venue" />
+          <AssociationSet Name="FK_CapacityRequirement_Event" Association="Self.FK_CapacityRequirement_Event">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="CapacityRequirement" EntitySet="CapacityRequirements" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomBooking_CapacityRequirement" Association="Self.FK_RoomBooking_CapacityRequirement">
+            <End Role="CapacityRequirement" EntitySet="CapacityRequirements" />
+            <End Role="RoomBooking" EntitySet="RoomBookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_InvoiceAddress" Association="Self.FK_Customer_InvoiceAddress">
+            <End Role="CustomerAddress" EntitySet="CustomerAddresses" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_InvoiceContact" Association="Self.FK_Customer_InvoiceContact">
+            <End Role="CustomerContact" EntitySet="CustomerContacts" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerAddress_Customer" Association="Self.FK_CustomerAddress_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CustomerAddress" EntitySet="CustomerAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerContact_Customer" Association="Self.FK_CustomerContact_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CustomerContact" EntitySet="CustomerContacts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_Customer" Association="Self.FK_Event_Customer">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_Venue" Association="Self.FK_Event_Venue">
+            <End Role="Venue" EntitySet="Venues" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Room_Venue" Association="Self.FK_Room_Venue">
+            <End Role="Venue" EntitySet="Venues" />
+            <End Role="Room" EntitySet="Rooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomBooking_Room" Association="Self.FK_RoomBooking_Room">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="RoomBooking" EntitySet="RoomBookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RoomCapacity_Room" Association="Self.FK_RoomCapacity_Room">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="RoomCapacity" EntitySet="RoomCapacities" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EventsDBModel1StoreContainer" CdmEntityContainer="EventsDBEntities1">
+          <EntitySetMapping Name="CapacityRequirements">
+            <EntityTypeMapping TypeName="EventsDBModel1.CapacityRequirement">
+              <MappingFragment StoreEntitySet="CapacityRequirement">
+                <ScalarProperty Name="OID" ColumnName="OID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="RoomSetup" ColumnName="RoomSetup" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Event" ColumnName="Event" />
+                <ScalarProperty Name="OptimisticLockField" ColumnName="OptimisticLockField" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="EventsDBModel1.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="OID" ColumnName="OID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="InvoiceContact" ColumnName="InvoiceContact" />
+                <ScalarProperty Name="InvoiceAddress" ColumnName="InvoiceAddress" />
+                <ScalarProperty Name="OptimisticLockField" ColumnName="OptimisticLockField" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerAddresses">
+            <EntityTypeMapping TypeName="EventsDBModel1.CustomerAddress">
+              <MappingFragment StoreEntitySet="CustomerAddress">
+                <ScalarProperty Name="OID" ColumnName="OID" />
+                <ScalarProperty Name="Line1" ColumnName="Line1" />
+                <ScalarProperty Name="Line2" ColumnName="Line2" />
+                <ScalarProperty Name="Line3" ColumnName="Line3" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="PostCode" ColumnName="PostCode" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Customer" ColumnName="Customer" />
+                <ScalarProperty Name="OptimisticLockField" ColumnName="OptimisticLockField" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerContacts">
+            <EntityTypeMapping TypeName="EventsDBModel1.CustomerContact">
+              <MappingFragment StoreEntitySet="CustomerContact">
+                <ScalarProperty Name="OID" ColumnName="OID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Customer" ColumnName="Customer" />
+                <ScalarProperty Name="OptimisticLockField" ColumnName="OptimisticLockField" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Events">
+            <EntityTypeMapping TypeName="EventsDBModel1.Event">
+              <MappingFragment StoreEntitySet="Event">
+                <ScalarProperty Name="OID" ColumnName="OID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="Venue" ColumnName="Venue" />
+                <ScalarProperty Name="Customer" ColumnName="Customer" />
+                <ScalarProperty Name="OptimisticLockField" ColumnName="OptimisticLockField" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rooms">
+            <EntityTypeMapping TypeName="EventsDBModel1.Room">
+              <MappingFragment StoreEntitySet="Room">
+                <ScalarProperty Name="OID" ColumnName="OID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Venue" ColumnName="Venue" />
+                <ScalarProperty Name="OptimisticLockField" ColumnName="OptimisticLockField" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoomBookings">
+            <EntityTypeMapping TypeName="EventsDBModel1.RoomBooking">
+              <MappingFragment StoreEntitySet="RoomBooking">
+                <ScalarProperty Name="OID" ColumnName="OID" />
+                <ScalarProperty Name="CapacityRequirement" ColumnName="CapacityRequirement" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="Room" ColumnName="Room" />
+                <ScalarProperty Name="OptimisticLockField" ColumnName="OptimisticLockField" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RoomCapacities">
+            <EntityTypeMapping TypeName="EventsDBModel1.RoomCapacity">
+              <MappingFragment StoreEntitySet="RoomCapacity">
+                <ScalarProperty Name="OID" ColumnName="OID" />
+                <ScalarProperty Name="Capacity" ColumnName="Capacity" />
+                <ScalarProperty Name="Setup" ColumnName="Setup" />
+                <ScalarProperty Name="Room" ColumnName="Room" />
+                <ScalarProperty Name="OptimisticLockField" ColumnName="OptimisticLockField" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Venues">
+            <EntityTypeMapping TypeName="EventsDBModel1.Venue">
+              <MappingFragment StoreEntitySet="Venue">
+                <ScalarProperty Name="OID" ColumnName="OID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="OptimisticLockField" ColumnName="OptimisticLockField" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
